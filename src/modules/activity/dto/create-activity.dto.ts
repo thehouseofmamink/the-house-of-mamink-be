@@ -15,5 +15,5 @@ export class CreateActivityDto {
 
     @IsOptional()
     @IsString()
-    image?: string;
+    image!: string;
 }

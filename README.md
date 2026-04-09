@@ -47,7 +47,13 @@ hapus file : prisma.config.ts
 npm uninstall prisma @prisma/client
 npm install prisma@5 @prisma/client@5
 npx prisma generate
+npx prisma migrate dev --name init
+npx prisma db push
 
 ============ #step7 ============
 npm install -D @types/multer
 => agar untuk upload foto <=
+
+============ #step8 ============
+npm install @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt
+npm install -D @types/passport-jwt @types/bcrypt

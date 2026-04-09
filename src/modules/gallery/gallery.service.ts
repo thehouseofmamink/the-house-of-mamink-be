@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
 
 @Injectable()
 export class GalleryService {
-  create(createGalleryDto: CreateGalleryDto) {
-    return 'This action adds a new gallery';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createGalleryDto: CreateGalleryDto) {
+    return this.prisma.gallery.create({
+      data: createGalleryDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all gallery`;
+  async findAll() {
+    return this.prisma.gallery.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gallery`;
+  async findOne(id: number) {
+    const data = await this.prisma.gallery.findUnique({
+      where: { id },
+    });
+
+    if (!data) {
+      throw new NotFoundException('Gallery not found');
+    }
+
+    return data;
   }
 
-  update(id: number, updateGalleryDto: UpdateGalleryDto) {
-    return `This action updates a #${id} gallery`;
+  async update(id: number, updateGalleryDto: UpdateGalleryDto) {
+    await this.findOne(id);
+
+    return this.prisma.gallery.update({
+      where: { id },
+      data: updateGalleryDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} gallery`;
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return this.prisma.gallery.delete({
+      where: { id },
+    });
   }
 }

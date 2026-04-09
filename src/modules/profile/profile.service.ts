@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfileService {
-  create(createProfileDto: CreateProfileDto) {
-    return 'This action adds a new profile';
+  constructor(private prisma: PrismaService) {}
+
+  // Karena profile biasanya 1 data, kita ambil yang pertama
+  async findOne() {
+    const data = await this.prisma.profile.findFirst();
+
+    if (!data) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return data;
   }
 
-  findAll() {
-    return `This action returns all profile`;
+  // Optional: create pertama kali (kalau belum ada)
+  async create(dto: CreateProfileDto) {
+    return this.prisma.profile.create({
+      data: dto,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
+  // Update profile (single record)
+  async update(dto: UpdateProfileDto) {
+    const existing = await this.prisma.profile.findFirst();
+
+    if (!existing) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return this.prisma.profile.update({
+      where: { id: existing.id },
+      data: dto,
+    });
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`;
-  }
+  // Optional: reset / delete
+  async remove() {
+    const existing = await this.prisma.profile.findFirst();
 
-  remove(id: number) {
-    return `This action removes a #${id} profile`;
+    if (!existing) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return this.prisma.profile.delete({
+      where: { id: existing.id },
+    });
   }
 }

@@ -22,7 +22,16 @@ model Activity {
   title       String
   description String
   date        DateTime
-  image       String?
+  image       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  image       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

@@ -49,7 +49,7 @@ export class ActivityController {
     ) {
         return this.activityService.create({
             ...dto,
-            image: file ? file.filename : undefined,
+            image: file?.filename ?? '',
         });
     }
 
