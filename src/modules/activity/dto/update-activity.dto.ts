@@ -1,4 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateActivityDto } from './create-activity.dto';
+import { IsOptional, IsString, IsDateString } from 'class-validator';
 
-export class UpdateActivityDto extends PartialType(CreateActivityDto) {}
+export class UpdateActivityDto {
+    @IsOptional()
+    @IsString()
+    title?: string;
+
+    @IsOptional()
+    @IsString()
+    description?: string;
+
+    @IsOptional()
+    @IsDateString()
+    date?: string;
+
+    @IsOptional()
+    @IsString()
+    image?: string;
+}

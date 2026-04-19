@@ -9,9 +9,10 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     JwtModule.registerAsync({
+      imports: [ConfigModule], // 🔥 penting biar config kebaca
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'secretKey',
+        secret: config.get<string>('JWT_SECRET'), // 🔥 jangan fallback
         signOptions: { expiresIn: '1d' },
       }),
     }),

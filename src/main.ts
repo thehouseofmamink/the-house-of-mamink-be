@@ -10,7 +10,13 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Enable global validation for DTO
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: false,
+    }),
+  );
 
 
   const uploadPath = join(process.cwd(), 'uploads');
@@ -25,8 +31,9 @@ async function bootstrap() {
   });
 
   // Enable CORS
-  app.enableCors({
-    origin: '*', 
+app.enableCors({
+  origin: 'http://localhost:3000',
+  credentials: true,
     // kalau sudah ada FE "*"" nya diganti pake link FE
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,

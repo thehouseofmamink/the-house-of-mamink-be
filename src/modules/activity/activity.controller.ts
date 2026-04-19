@@ -21,7 +21,6 @@ export class ActivityController {
         return this.activityService.findOne(Number(id));
     }
 
-    @UseGuards(JwtAuthGuard)
     @Post()
     @UseInterceptors(
         FileInterceptor('image', {
@@ -53,10 +52,10 @@ export class ActivityController {
         });
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Patch(':id')
     @UseInterceptors(
-        FileInterceptor('image', {
+        FileInterceptor('image', { 
             storage: diskStorage({
                 destination: './uploads',
                 filename: (req, file, cb) => {
@@ -79,8 +78,10 @@ export class ActivityController {
     update(
         @Param('id') id: string,
         @UploadedFile() file: Express.Multer.File,
-        @Body() dto: UpdateActivityDto,
+        @Body() dto: any,
         ) {
+        console.log('CONTROLLER DTO:', dto);
+        console.log('FILE:', file);
         return this.activityService.update(Number(id), {
             ...dto,
             image: file ? file.filename : dto.image,
