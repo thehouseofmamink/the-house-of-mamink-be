@@ -31,10 +31,12 @@ async function bootstrap() {
   });
 
   // Enable CORS
-app.enableCors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-    // kalau sudah ada FE "*"" nya diganti pake link FE
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://the-house-of-mamink-fe-azure.vercel.app',
+    ],
+    credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
