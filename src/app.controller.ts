@@ -5,13 +5,18 @@ export class AppController {
     @Get()
     getRoot() {
         return {
-        message: 'The House of Mamink API is running 🚀',
-        endpoints: [
-            '/gallery',
-            '/activity',
-            '/profile',
-            '/auth',
-        ],
+            status: 'success',
+            service: 'The House of Mamink API',
+            owner: 'Vinus',
+            message: '🚀 API is live and ready to serve!',
+            version: '1.0.0',
+            timestamp: new Date().toISOString(),
+            endpoints: {
+                gallery: '/gallery',
+                activity: '/activity',
+                profile: '/profile',
+                auth: '/auth',
+            },
         };
     }
 }
